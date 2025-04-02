@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Növénygondozási Rendszer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header></header>
-    <main></main>
-    <footer></footer>
+<h1>Növénygondozási Rendszer</h1>
+
+<form id="plantForm">
+    <input type="text" id="name" placeholder="Növény neve" required>
+    <input type="text" id="type" placeholder="Típus" required>
+    <input type="number" id="water" placeholder="Vízigény (ml)" required>
+    <input type="number" id="frequency" placeholder="Öntözési gyakoriság (nap)" required>
+    <button type="submit">Hozzáadás</button>
+</form>
 </body>
 </html>
