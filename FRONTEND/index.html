@@ -4,27 +4,38 @@
     <meta charset="UTF-8">
     <title>Növénygondozási Rendszer</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-<h1>Növénygondozási Rendszer</h1>
+<div class="container my-5" style="max-width: 800px;">
+    <h1>Növénygondozási Rendszer</h1>
 
-<form id="plantForm">
-    <input type="text" id="name" placeholder="Növény neve" required>
-    <input type="text" id="type" placeholder="Típus" required>
-    <input type="number" id="water" placeholder="Vízigény (ml)" required>
-    <input type="number" id="frequency" placeholder="Öntözési gyakoriság (nap)" required>
-    <button type="submit">Hozzáadás</button>
-</form>
+    <form id="plantForm">
+        <input type="text" id="name" placeholder="Növény neve" required>
+        <input type="text" id="type" placeholder="Típus" required>
+        <input type="number" id="water" placeholder="Vízigény (ml)" required>
+        <input type="number" id="frequency" placeholder="Öntözési gyakoriság (nap)" required>
+        <button type="submit">Hozzáadás</button>
+    </form>
 
-<div class="container-1">
-    <table>
-        <tr>
-            <th>Növény neve</th>
-            <th>Típus</th>
-            <th>Vízigény (ml)</th>
-            <th>Öntözési gyakoriság (nap)</th>
-        </tr>
-    </table>
+    <div class="container mt-4">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Hétfő</th>
+                    <th>Kedd</th>
+                    <th>Szerda</th>
+                    <th>Csütörtök</th>
+                    <th>Péntek</th>
+                    <th>Szombat</th>
+                    <th>Vasárnap</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="app.js"></script> 
 </div>
 </body>
 </html>
