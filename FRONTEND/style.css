@@ -1,21 +1,28 @@
 h1 {
-    color: black;
-    font-family:Arial, Helvetica, sans-serif;
+    color: #2c3e50;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-size: 3rem;
     text-align: center;
     margin-bottom: 60px;
     padding-bottom: 20px;
-    
+    border-bottom: 2px solid #ccc;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
+
+
 body {
-    margin: 0;
+    background-color: #f8f1dd !important;
+    /* margin: 0; */
     padding: 0;
-    text-align: center;
-    font-family:Arial, Helvetica, sans-serif;
+    /* text-align: center;
+    font-family:Arial, Helvetica, sans-serif; */
 }
 
 form {
     /*background-color: pink;   (teszt)*/  
+    padding-top: 20px;
     display: flex;             
     flex-direction: column;    
     align-items: center;       
@@ -44,11 +51,13 @@ button {
     cursor: pointer;
     border-radius: 4px;
     transition: all 0.3s ease;
-    margin-top: 10px; 
     font-family:Arial, Helvetica, sans-serif;
+    margin-top: 10px;
+    
 }
 
 button:hover {
+    
     background-color: black; 
     color: white; 
     border: 2px solid black;
@@ -58,3 +67,22 @@ button:hover {
 th{
     text-align:center !important;
 }
+
+.submit-button{
+    margin-top:20px;
+}
+
+.button-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#clearBtn {
+    display: inline-block;
+}
+
+#table-target td {
+    text-align: center;
+}
+
+
