@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.vsp
+*.vsidx
+
+# Build output
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# ASP.NET
+appsettings.Development.json

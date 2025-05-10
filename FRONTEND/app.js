@@ -28,6 +28,17 @@ function renderPlants() {
     const tbody = document.getElementById("table-target");
     tbody.innerHTML = "";
 
+    const dailyWateringCount = [0, 0, 0, 0, 0, 0, 0];
+
+    plants.forEach(plant => {
+        for (let i = 0; i < 7; i++) {
+            if (i % plant.frequency === 0) {
+                dailyWateringCount[i]++;
+            }
+        }
+    });
+    
+
     plants.forEach((plant) => {
         const row = document.createElement("tr");
 
@@ -36,6 +47,7 @@ function renderPlants() {
         nameCell.textContent = plant.name;
         row.appendChild(nameCell);
 
+        
         // Heti öntözési terv (7 napra)
         let totalWater = 0;
         for (let i = 0; i < 7; i++) {
