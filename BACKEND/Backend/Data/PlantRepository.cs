@@ -8,7 +8,7 @@ namespace Backend.Data
 
         public void Create(List<Plant> plants)
         {
-            _plants.Clear(); // ha új listát küldünk, töröljük a régit
+            _plants.Clear(); 
             _plants.AddRange(plants);
         }
 
@@ -29,6 +29,41 @@ namespace Backend.Data
         public void DeleteAll()
         {
             _plants.Clear();
+        }
+
+        public object GenerateSchedule()
+        {
+            var days = new[] { "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap" };
+
+            var weeklySchedule = new Dictionary<string, List<string>>();
+            var waterUsage = new Dictionary<string, double>();
+            var workload = days.ToDictionary(day => day, day => 0);
+
+            foreach (var plant in _plants)
+            {
+                var scheduledDays = new List<string>();
+                double totalWater = 0;
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (i % plant.Frequency == 0)
+                    {
+                        scheduledDays.Add(days[i]);
+                        totalWater += plant.Water;
+                        workload[days[i]]++;
+                    }
+                }
+
+                weeklySchedule[plant.Name] = scheduledDays;
+                waterUsage[plant.Name] = totalWater;
+            }
+
+            return new
+            {
+                WeeklySchedule = weeklySchedule,
+                WeeklyWaterConsumption = waterUsage,
+                DailyWorkload = workload
+            };
         }
     }
 }

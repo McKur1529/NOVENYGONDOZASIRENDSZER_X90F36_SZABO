@@ -15,7 +15,6 @@ public class PlantController : ControllerBase
         _repo = repo;
     }
 
-    // POST: api/plant
     [HttpPost]
     public IActionResult CreatePlants([FromBody] List<Plant> plants)
     {
@@ -23,15 +22,13 @@ public class PlantController : ControllerBase
         return Ok("Növények elmentve memóriába.");
     }
 
-    // GET: api/plant
     [HttpGet]
     public IActionResult GetPlants()
     {
         var allPlants = _repo.Read();
         return Ok(allPlants);
     }
-
-    // DELETE: api/plant/{name}
+    
     [HttpDelete("{name}")]
     public IActionResult DeletePlant(string name)
     {
@@ -39,11 +36,17 @@ public class PlantController : ControllerBase
         return Ok($"Törölve: {name}");
     }
 
-    // DELETE: api/plant
     [HttpDelete]
     public IActionResult DeleteAll()
     {
         _repo.DeleteAll();
         return Ok("Minden növény törölve.");
+    }
+
+    [HttpGet("schedule")]
+    public IActionResult GetSchedule()
+    {
+        var schedule = _repo.GenerateSchedule();
+        return Ok(schedule);
     }
 }
