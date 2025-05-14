@@ -6,10 +6,10 @@ namespace Backend.Data
     {
         private List<Plant> _plants = new();
 
-        public void Create(List<Plant> plants)
+        public void Create(Plant plant)
         {
             _plants.Clear(); 
-            _plants.AddRange(plants);
+            _plants.Add(plant);
         }
 
         public List<Plant> Read()

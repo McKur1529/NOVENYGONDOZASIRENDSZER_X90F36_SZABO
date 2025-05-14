@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    renderSchedule(); // induláskor betölti a heti tervet
+    //renderSchedule(); // induláskor betölti a heti tervet
 
     document.getElementById('plantForm').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const newPlant = { Name, Type, Water, Frequency };
         
-        sendPlants(newPlant)
+        sendPlant(newPlant)
         console.log(newPlant)
        
     });
@@ -23,61 +23,70 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function sendPlants(plants){
+function sendPlant(plant){
     fetch('http://localhost:5116/api/plant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(plants)
-    });
+        body: JSON.stringify(plant)
+    }) .then(resp => {
+        console.log('create: ' + resp)
+        if (resp.status === 200) {
+            renderSchedule()
+        } else {
+            resp.text().then(console.warn)
+        }
+    })
+    .catch(error => console.log(error))
 
-    renderSchedule();
+   
 
 }
 
 
 
-function renderSchedule() {
-    fetch('http://localhost:5116/api/plant/schedule')
-        .then(res => res.json())
-        .then(data => {
-            const schedule = data.weeklySchedule;
-            const waterUsage = data.weeklyWaterConsumption;
-            const workload = data.dailyWorkload;
+async function renderSchedule() {
+    const response = await fetch('http://localhost:5116/api/plant/schedule')
+    const data = await response.json()
+    console.log(data)
 
-            const tbody = document.getElementById("table-target");
-            tbody.innerHTML = "";
+    
+    const schedule = data.weeklySchedule;
+    const waterUsage = data.weeklyWaterConsumption;
+    const workload = data.dailyWorkload;
 
-            const days = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+    const tbody = document.getElementById("table-target");
+    tbody.innerHTML = "";
 
-            for (const plantName in schedule) {
-                const row = document.createElement("tr");
+    const days = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
 
-                // Név
-                const nameCell = document.createElement("td");
-                nameCell.textContent = plantName;
-                row.appendChild(nameCell);
+    for (const plantName in schedule) {
+        const row = document.createElement("tr");
 
-                // Heti terv
-                days.forEach(day => {
-                    const cell = document.createElement("td");
-                    if (schedule[plantName].includes(day)) {
-                        cell.textContent = `${(waterUsage[plantName] / schedule[plantName].length).toFixed(2)} ml`;
-                    } else {
-                        cell.textContent = "";
-                    }
-                    row.appendChild(cell);
-                });
+        // Név
+        const nameCell = document.createElement("td");
+        nameCell.textContent = plantName;
+        row.appendChild(nameCell);
 
-                // Összes heti vízfogyasztás
-                const totalCell = document.createElement("td");
-                totalCell.textContent = `${waterUsage[plantName].toFixed(2)} ml`;
-                row.appendChild(totalCell);
-
-                tbody.appendChild(row);
+        // Heti terv
+        days.forEach(day => {
+            const cell = document.createElement("td");
+            if (schedule[plantName].includes(day)) {
+                cell.textContent = `${(waterUsage[plantName] / schedule[plantName].length).toFixed(2)} ml`;
+            } else {
+                cell.textContent = "";
             }
-
-            highlightBusyDays(workload);
+            row.appendChild(cell);
         });
+
+        // Összes heti vízfogyasztás
+        const totalCell = document.createElement("td");
+        totalCell.textContent = `${waterUsage[plantName].toFixed(2)} ml`;
+        row.appendChild(totalCell);
+
+        tbody.appendChild(row);
+    }
+
+    highlightBusyDays(workload);
 }
 
 function highlightBusyDays(workload) {

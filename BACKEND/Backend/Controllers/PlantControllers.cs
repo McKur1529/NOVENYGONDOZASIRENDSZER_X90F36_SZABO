@@ -16,9 +16,9 @@ public class PlantController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreatePlants([FromBody] List<Plant> plants)
+    public IActionResult CreatePlants([FromBody] Plant plant)
     {
-        _repo.Create(plants);
+        _repo.Create(plant);
         return Ok("Növények elmentve memóriába.");
     }
 
