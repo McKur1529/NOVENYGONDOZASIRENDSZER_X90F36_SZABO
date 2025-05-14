@@ -1,83 +1,96 @@
-const plants = [];
-
 document.addEventListener('DOMContentLoaded', function () {
-    const savedPlants = JSON.parse(localStorage.getItem("plants")) || [];
-    plants.push(...savedPlants);
-    renderPlants();
+    renderSchedule(); // induláskor betölti a heti tervet
 
-    document.getElementById('plantForm').addEventListener('submit', function(event) {
+    document.getElementById('plantForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        let name = document.querySelector('#name').value;
-        let type = document.querySelector('#type').value;
-        let water = parseFloat(document.querySelector('#water').value);
-        let frequency = parseInt(document.querySelector('#frequency').value);
+        const Name = document.querySelector('#name').value;
+        const Type = document.querySelector('#type').value;
+        const Water = parseFloat(document.querySelector('#water').value);
+        const Frequency = parseInt(document.querySelector('#frequency').value);
 
-        let newPlant = { name, type, water, frequency };
-        plants.push(newPlant);
-        console.log(plants)
+        const newPlant = { Name, Type, Water, Frequency };
+        
+        sendPlants(newPlant)
+        console.log(newPlant)
+       
+    });
 
-        localStorage.setItem("plants", JSON.stringify(plants));
-
-        renderPlants();
-        document.getElementById("plantForm").reset();
+    document.getElementById("clearBtn").addEventListener("click", function () {
+        fetch('http://localhost:5116/api/plant', {
+            method: 'DELETE'
+        }).then(() => renderSchedule());
     });
 });
 
-function renderPlants() {
-    const tbody = document.getElementById("table-target");
-    tbody.innerHTML = "";
-
-    const dailyWateringCount = [0, 0, 0, 0, 0, 0, 0];
-
-    plants.forEach(plant => {
-        for (let i = 0; i < 7; i++) {
-            if (i % plant.frequency === 0) {
-                dailyWateringCount[i]++;
-            }
-        }
-    });
-    
-
-    plants.forEach((plant) => {
-        const row = document.createElement("tr");
-
-        // Növény neve
-        const nameCell = document.createElement("td");
-        nameCell.textContent = plant.name;
-        row.appendChild(nameCell);
-
-        
-        // Heti öntözési terv (7 napra)
-        let totalWater = 0;
-        for (let i = 0; i < 7; i++) {
-            const cell = document.createElement("td");
-            if (i % plant.frequency === 0) {
-                cell.textContent = `${plant.water} ml`;
-                // cell.style.backgroundColor = "#d0f0c0"; 
-                totalWater += plant.water;
-            } else {
-                cell.textContent = "";
-                // cell.style.backgroundColor = "#ffcccc";
-            }
-            row.appendChild(cell);
-        }
-
-        // Heti összes vízfogyasztás
-        const totalCell = document.createElement("td");
-        totalCell.textContent = `${totalWater} ml`;
-        row.appendChild(totalCell);
-
-        // Sor hozzáadása a táblázathoz
-        tbody.appendChild(row);
+function sendPlants(plants){
+    fetch('http://localhost:5116/api/plant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(plants)
     });
 
+    renderSchedule();
 
-    document.getElementById("clearBtn").addEventListener("click", function () {
-        plants.length = 0;
-        localStorage.removeItem("plants");
-        document.getElementById("table-target").innerHTML = "";
-    });
 }
 
 
+
+function renderSchedule() {
+    fetch('http://localhost:5116/api/plant/schedule')
+        .then(res => res.json())
+        .then(data => {
+            const schedule = data.weeklySchedule;
+            const waterUsage = data.weeklyWaterConsumption;
+            const workload = data.dailyWorkload;
+
+            const tbody = document.getElementById("table-target");
+            tbody.innerHTML = "";
+
+            const days = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+
+            for (const plantName in schedule) {
+                const row = document.createElement("tr");
+
+                // Név
+                const nameCell = document.createElement("td");
+                nameCell.textContent = plantName;
+                row.appendChild(nameCell);
+
+                // Heti terv
+                days.forEach(day => {
+                    const cell = document.createElement("td");
+                    if (schedule[plantName].includes(day)) {
+                        cell.textContent = `${(waterUsage[plantName] / schedule[plantName].length).toFixed(2)} ml`;
+                    } else {
+                        cell.textContent = "";
+                    }
+                    row.appendChild(cell);
+                });
+
+                // Összes heti vízfogyasztás
+                const totalCell = document.createElement("td");
+                totalCell.textContent = `${waterUsage[plantName].toFixed(2)} ml`;
+                row.appendChild(totalCell);
+
+                tbody.appendChild(row);
+            }
+
+            highlightBusyDays(workload);
+        });
+}
+
+function highlightBusyDays(workload) {
+    const max = Math.max(...Object.values(workload));
+    const headers = document.querySelectorAll("thead th");
+    const days = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+
+    days.forEach((day, index) => {
+        const count = workload[day];
+        if (count === max && max > 0) {
+            headers[index + 1].style.backgroundColor = "#f9caca";
+        } else {
+            headers[index + 1].style.backgroundColor = "";
+        }
+    });
+}
