@@ -38,7 +38,7 @@ function sendPlant(plant){
     })
     .catch(error => console.log(error))
 
-   
+   document.getElementById('plantForm').reset();
 
 }
 
