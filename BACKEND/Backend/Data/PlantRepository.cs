@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.Model;
+using Backend.Models;
 
 namespace Backend.Data
 {
@@ -8,7 +9,6 @@ namespace Backend.Data
 
         public void Create(Plant plant)
         {
-            _plants.Clear(); 
             _plants.Add(plant);
         }
 
@@ -31,7 +31,7 @@ namespace Backend.Data
             _plants.Clear();
         }
 
-        public object GenerateSchedule()
+        public Schedule GenerateSchedule()
         {
             var days = new[] { "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap" };
 
@@ -58,7 +58,7 @@ namespace Backend.Data
                 waterUsage[plant.Name] = totalWater;
             }
 
-            return new
+            return new Schedule
             {
                 WeeklySchedule = weeklySchedule,
                 WeeklyWaterConsumption = waterUsage,

@@ -8,6 +8,11 @@ builder.Services.AddSingleton<IPlantRepository, PlantRepository>();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
+app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -20,8 +25,5 @@ app.UseCors(x => x
     .AllowAnyHeader()
     .WithOrigins("http://127.0.0.1:5500"));
 
-app.UseHttpsRedirection();
-
-app.MapControllers();
 
 app.Run();

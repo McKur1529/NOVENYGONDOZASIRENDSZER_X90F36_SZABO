@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.Model;
+using Backend.Models;
 
 namespace Backend.Data
 {
@@ -8,6 +9,6 @@ namespace Backend.Data
         List<Plant> Read();                   
         void Delete(string name);             
         void DeleteAll();
-        object GenerateSchedule();
+        Schedule GenerateSchedule();
     }
 }
