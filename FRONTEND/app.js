@@ -42,7 +42,7 @@ function sendPlant(plant){
 
 }
 
-//asdasdasd
+
 
 
 async function renderSchedule() {
