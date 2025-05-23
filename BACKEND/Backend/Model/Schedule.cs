@@ -7,7 +7,7 @@
         public Dictionary<string, int> DailyWorkload { get; set; }
 
         public Schedule() { }
-
+        //asdasdasd
         public Schedule(Dictionary<string, List<string>> weeklySchedule, Dictionary<string, double> weeklyWaterConsumption, Dictionary<string, int> dailyWorkload)
         {
             WeeklySchedule = weeklySchedule;
