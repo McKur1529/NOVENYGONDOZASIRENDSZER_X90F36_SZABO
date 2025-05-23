@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    //renderSchedule(); // induláskor betölti a heti tervet
+    
 
     document.getElementById('plantForm').addEventListener('submit', function (event) {
         event.preventDefault();
