@@ -62,12 +62,12 @@ async function renderSchedule() {
     for (const plantName in schedule) {
         const row = document.createElement("tr");
 
-        // Név
+        
         const nameCell = document.createElement("td");
         nameCell.textContent = plantName;
         row.appendChild(nameCell);
 
-        // Heti terv
+        
         days.forEach(day => {
             const cell = document.createElement("td");
             if (schedule[plantName].includes(day)) {
@@ -78,7 +78,7 @@ async function renderSchedule() {
             row.appendChild(cell);
         });
 
-        // Összes heti vízfogyasztás
+        
         const totalCell = document.createElement("td");
         totalCell.textContent = `${waterUsage[plantName].toFixed(2)} ml`;
         row.appendChild(totalCell);
